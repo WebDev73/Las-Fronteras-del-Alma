@@ -6,7 +6,13 @@ buildscript {
     val agpVersion = "8.13.0"
     val androidEnabled = gradle.extra["androidEnabled"] as Boolean
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("androidx\\..*")
+                includeGroupByRegex("com\\.android(\\..*)?")
+                includeGroupByRegex("com\\.google\\..*")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
