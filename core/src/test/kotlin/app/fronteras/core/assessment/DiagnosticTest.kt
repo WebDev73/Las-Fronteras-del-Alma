@@ -68,4 +68,17 @@ class DiagnosticTest {
         assertTrue(s.conditions.heuristicScoring)
         assertTrue("heuristic" in s.scorer)
     }
+
+    @Test
+    fun `open answers can be scored together at the end`() {
+        val bank = DiagnosticBank.english
+        val d = AdaptiveDiagnostic(bank, null, { 0L })
+        val warm = d.next()!!
+        d.recordDeferredOpen(warm, "Hi, I'm Ana from Manila")
+        assertEquals(listOf(warm.id), d.deferredOpenResponses.map { it.first.id })
+        val before = d.currentEstimates.getValue(Skill.SPEAKING)
+        d.observeExternal(Skill.SPEAKING, 0.9, 2.0, EvidenceConditions(), "AI rubric")
+        assertTrue(d.currentEstimates.getValue(Skill.SPEAKING).mean > before.mean)
+        assertTrue(d.next()?.id != warm.id)
+    }
 }

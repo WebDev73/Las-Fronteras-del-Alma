@@ -136,6 +136,27 @@ class AdaptiveDiagnostic(
             "read-aloud: ${"%.0f".format(intel * 100)}% of words recognised as intended (${report.source.label.lowercase()})")
     }
 
+    /**
+     * Records an open response whose scoring is deferred, so all open answers can be scored
+     * together at the end (one AI call instead of one per item).
+     */
+    fun recordDeferredOpen(item: DiagnosticItem, text: String) {
+        require(item.kind.open)
+        record(DiagnosticResponse(item.id, text = text))
+    }
+
+    /** Applies a score from an external scorer (e.g. a batched AI rubric) to one skill. */
+    fun observeExternal(skill: Skill, score: Double, difficulty: Double, conditions: EvidenceConditions, note: String) {
+        val est = estimates[skill] ?: return
+        val w = EvidenceReliability.weight(skill, conditions)
+        estimates[skill] = SkillUpdater.update(est, SkillObservation(skill, score.coerceIn(0.0, 1.0), difficulty, w, now(), "diagnostic:external"))
+        evidenceCount.getOrPut(skill) { mutableListOf() } += note
+    }
+
+    val deferredOpenResponses: List<Pair<DiagnosticItem, String>>
+        get() = responses.filter { it.open == null && it.text != null && !it.skipped }
+            .mapNotNull { r -> bank.firstOrNull { it.id == r.itemId && it.kind.open && it.kind != DiagnosticItemKind.READ_ALOUD }?.let { it to r.text!! } }
+
     fun skip(item: DiagnosticItem) {
         record(DiagnosticResponse(item.id, skipped = true))
     }
