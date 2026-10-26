@@ -34,10 +34,9 @@ Run the server and point the app at it: see [docs/SETUP.md](docs/SETUP.md).
 **Implemented and tested here (JVM):** the whole `core` engine (90 tests) and the server
 (22 tests, including the real Anthropic SDK against a local stub of the Messages API).
 
-**Written but not yet compiled:** the Android app. This development container can't reach
-`dl.google.com`, so there is no Android SDK here. The CI workflow
-(`.github/workflows/ci.yml`) builds, unit-tests and lints it, but it has not run yet: see
-[docs/ROADMAP.md](docs/ROADMAP.md#verification-status).
+**Built in CI, not yet tried on a device:** the Android app compiles, passes its unit tests
+and lint in GitHub Actions, which also publishes a debug APK artifact. It has not been run on a
+phone or emulator yet: see [docs/ROADMAP.md](docs/ROADMAP.md#verification-status).
 
 **Not configured by default, by design:** AI conversation needs a server with
 `ANTHROPIC_API_KEY`. Without one, the app says so and offers review and a clearly labelled

@@ -7,12 +7,12 @@
 | `core` | Compiled; unit tests pass locally |
 | `server` | Compiled; tests pass locally; binary smoke-tested (health, auth, capabilities, honest 503 without a key) |
 | Claude integration | Request shape and streaming verified against a local Messages API stub with the real SDK. **Not yet run against the live API** (no key was available in development) |
-| `app` | **Written but not compiled**: the dev container had no Android SDK, and CI has not run because pushing to GitHub was refused. Expect some compile/lint fixes on first CI run |
+| `app` | Compiles, unit tests and lint pass in CI (GitHub Actions); debug APK uploaded as an artifact. **Not yet exercised on a device or emulator**: no UI/instrumentation tests yet |
 
 ## Next milestones
 
-1. **Get the app green in CI.** Fix compile and lint findings, then add Compose UI tests for
-   onboarding, the conversation turn loop and review.
+1. **Test on devices.** Manual pass on a phone/emulator (speech recognition and TTS per language), then
+   Compose UI tests for onboarding, the conversation turn loop and review.
 2. **Live API evaluation.** Build an eval set of learner turns (multiple languages and
    levels, including dialect forms and ASR errors). Measure correction precision and how
    often valid variants are wrongly flagged, then tune prompts and effort.
