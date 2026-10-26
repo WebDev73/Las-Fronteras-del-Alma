@@ -39,7 +39,9 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: android-actions/setup-android@v3
+      # ubuntu-latest ships an Android SDK with ANDROID_HOME set; AGP installs missing platforms.
+      - name: Check Android SDK
+        run: echo "ANDROID_HOME=$ANDROID_HOME" && test -d "$ANDROID_HOME"
       - uses: gradle/actions/setup-gradle@v4
       - name: Assemble, unit test and lint
         run: ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug --stacktrace
