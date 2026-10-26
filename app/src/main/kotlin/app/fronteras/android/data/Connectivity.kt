@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 /** Tracks whether the device has validated internet access. */
 class Connectivity(context: Context) {
-    private val cm = context.getSystemService(ConnectivityManager::class.java)
+    private val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val _online = MutableStateFlow(currentlyOnline())
     val online: StateFlow<Boolean> = _online.asStateFlow()
 

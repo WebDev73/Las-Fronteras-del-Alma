@@ -142,7 +142,7 @@ private fun InterfaceLanguage(d: OnboardingDraft, update: ((OnboardingDraft) -> 
     LanguageCatalog.languages.forEach { l ->
         RadioRow("${l.nativeName} (${l.englishName})", d.interfaceLanguage == l.tag) { update { it.copy(interfaceLanguage = l.tag) } }
     }
-    if (d.interfaceLanguage != null && d.interfaceLanguage.base != "en") {
+    if (d.interfaceLanguage?.base?.let { it != "en" } == true) {
         Text("The app's menus are in English for now. Your choice is saved and explanations can still be in your language.", style = MaterialTheme.typography.bodySmall)
     }
 }

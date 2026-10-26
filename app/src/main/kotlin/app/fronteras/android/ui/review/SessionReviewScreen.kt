@@ -66,7 +66,7 @@ fun SessionReviewScreen(sessionId: String, onReview: () -> Unit, onHome: () -> U
                             Text("${r.skill.label}: ${"%.1f".format(r.score)}/4 ($conf)", style = MaterialTheme.typography.bodyMedium)
                             r.evidence.firstOrNull()?.let { Text("  “$it”", style = MaterialTheme.typography.bodySmall) }
                         }
-                        analysis.limitations.forEach { Text("Note: $it", style = MaterialTheme.typography.bodySmall) }
+                        analysis?.limitations.orEmpty().forEach { Text("Note: $it", style = MaterialTheme.typography.bodySmall) }
                     }
                 }
             }

@@ -59,8 +59,8 @@ class ApiClientTest {
     }
 
     @Test fun `connection loss is retryable`() = runBlocking {
-        server.shutdown()
-        val ev = api.partnerTurn(request).toList().single() as PartnerEvent.Failed
+        val dead = ApiClient({ ServerEndpoint("http://127.0.0.1:1/", "token") })
+        val ev = dead.partnerTurn(request).toList().single() as PartnerEvent.Failed
         assertTrue(ev.retryable)
     }
 

@@ -243,7 +243,7 @@ class LearnerRepository(
         val examples = ProgressCalculator.improvementExamples(
             corrections.map { it.second },
             sessions.drop(1).flatMap { s -> s.learnerTurns.filter { turn -> corrections.any { it.first < s.startedAt } }.map { it.text } },
-            PostSessionProcessor::normalize,
+            { PostSessionProcessor.normalize(it) },
         )
         return ProgressCalculator.report(t, d.estimatesFor(t), d.estimateHistory, mastery(t, d).values, d.confidence, examples)
     }
